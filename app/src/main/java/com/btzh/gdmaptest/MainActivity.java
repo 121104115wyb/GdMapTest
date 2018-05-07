@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (aMapLocation != null) {
                     if (aMapLocation.getErrorCode() == 0) {
-
                         StringBuffer stringBuffer = new StringBuffer();
                         //可在其中解析amapLocation获取相应内容。
                         aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
