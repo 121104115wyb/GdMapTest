@@ -18,6 +18,8 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.CoordinateConverter;
+import com.amap.api.location.DPoint;
 import com.btzh.gdmaptest.service.LocationForegoundService;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public AMapLocationClientOption mLocationOption = null;
 
     private Intent serviceIntent = null;
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-       // mLocationClient.enableBackgroundLocation(2001, buildNotification());
+        // mLocationClient.enableBackgroundLocation(2001, buildNotification());
     }
 
     @Override
@@ -215,6 +219,29 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "你需要同意权限的申请\n否则会导致定位功能不可使用", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    //坐标转换
+    private void changeConver(double latitude, double longitude) {
+        CoordinateConverter converter = new CoordinateConverter(MainActivity.this);
+
+        boolean isAMapDataAvailable = converter.isAMapDataAvailable(latitude, longitude);
+        if (isAMapDataAvailable) {
+
+            DPoint point = new DPoint(latitude, longitude);
+            // CoordType.GPS 待转换坐标类型
+            converter.from(CoordinateConverter.CoordType.GPS);
+            // sourceLatLng待转换坐标点 DPoint类型
+            try {
+                converter.coord(point);
+                // 执行转换操作
+                DPoint desLatLng = converter.convert();
+
+                Log.d(TAG, "changeConver: "+"latitude:"+desLatLng.getLatitude()+"\n"+"longitude:"+longitude);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
