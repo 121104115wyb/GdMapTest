@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.btzh.gdmaptest"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //引入高德定位方式 1
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation files('libs/AMap_Location_V4.0.1_20180426.jar')
+
+    //引入高德定位方式 2
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation 'com.amap.api:location:latest.integration'
+
+    //引入高德地图方式 3 (方式2和方式3，推荐使用方式3，方式3和方式1推荐使用方式3)
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.amap.api:location:4.0.1'
+
+    //android 6.0后需要动态申请权限
+    //github address:https://github.com/tbruyelle/RxPermissions
+    //To use this library your minSdkVersion must be >= 11
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+
+
+}
