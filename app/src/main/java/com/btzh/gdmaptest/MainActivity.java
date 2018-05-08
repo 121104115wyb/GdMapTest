@@ -1,13 +1,7 @@
 package com.btzh.gdmaptest;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -174,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
         if (null != serviceIntent) {
             stopService(serviceIntent);
         }
+        //腾讯高德：31.3036350951,120.6408691406
+        //changeConver(31.3036350951,120.6408691406);
     }
 
     @Override
@@ -221,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    //坐标转换
+    //坐标转换(维度，经度)
     private void changeConver(double latitude, double longitude) {
         CoordinateConverter converter = new CoordinateConverter(MainActivity.this);
 
@@ -230,7 +226,9 @@ public class MainActivity extends AppCompatActivity {
 
             DPoint point = new DPoint(latitude, longitude);
             // CoordType.GPS 待转换坐标类型
-            converter.from(CoordinateConverter.CoordType.GPS);
+            //BAIDU, MAPBAR, MAPABC, SOSOMAP, ALIYUN, GOOGLE, GPS;
+            //转换为百度坐标偏差最大，其次为 MAPBAR，MAPABC，ALIYUN，GOOGLE
+            converter.from(CoordinateConverter.CoordType.ALIYUN);
             // sourceLatLng待转换坐标点 DPoint类型
             try {
                 converter.coord(point);
@@ -242,6 +240,16 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+
+//        谷歌地图：31.3036216235,120.6408399011
+//        百度地图：31.3093802970,120.6474029384
+//        腾讯高德：31.3036350951,120.6408691406
+//        图吧地图：31.3060859751,120.6466002906
+//        谷歌地球：31.3057759751,120.6366502906
+//        北纬N31°18′20.79″ 东经E120°38′11.94″
+
+
     }
 
 }
