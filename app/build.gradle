@@ -9,13 +9,68 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    //签名脚本配置
+    signingConfigs {
+        //配置你的签名和密钥到本地的gradle.properties,提交代码时不提交这个文件，用来保护你的密钥安全
+        //但是，当多人同时维护这个项目时，一定要记得分享
+        create("release") {
+            //正确填写你的jks文件目录地址
+            storeFile file(KEY_PATH)
+            //签名
+            storePassword KEY_PASS
+            //别名标签
+            keyAlias ALIAS_NAME
+            //秘钥
+            keyPassword ALIAS_PASS
+            storeType STORETYPE
         }
     }
+    //编译类型
+    buildTypes {
+        //正式版本
+        release {
+            //优化png图片
+            crunchPngs false
+            //开启资源压缩（先去除无用资源，然后进行资源压缩，条件是混淆必须首先开启，不开启则没用）
+            shrinkResources false
+            //开启混淆
+            minifyEnabled false
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //Zipalign优化
+            zipAlignEnabled false
+            //配置混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        //测试版本
+        debug {
+            //不优化png图片(优化图片会减慢构建时间)
+            crunchPngs false
+            //不开启资源压缩（先去除无用资源，然后进行资源压缩，条件是混淆必须首先开启，不开启则没用）(开启资源压缩会减慢构建时间)
+            shrinkResources false
+            //不开启混淆(开启混淆会减慢构建时间)
+            minifyEnabled true
+            // 显示Log(测试版本要显示日志)
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            //Zipalign优化(不开启，开启减慢构建时间)
+            zipAlignEnabled false
+            //开启插件压缩器，该属性需要和minifyEnabled true 进行同时使用，这样，在debug模式下，虽然开启了代码混淆，但是并不会进行
+            //真正的代码混淆，而是只会移除无用的代码
+            useProguard false
+            //配置混淆文件
+            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
+        }
+    }
+
+
+
+
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -26,6 +81,9 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:support-vector-drawable:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

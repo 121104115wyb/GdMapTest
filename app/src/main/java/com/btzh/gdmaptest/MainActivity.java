@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -252,4 +254,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+         getMenuInflater().inflate(R.menu.test,menu);
+
+         return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.test1:
+                Intent intent1 = new Intent(this,Main2Activity.class);
+                startActivity(intent1);
+
+                break;
+            case R.id.test2:
+                Intent intent2 = new Intent(this,Main3Activity.class);
+                startActivity(intent2);
+                break;
+            case R.id.test3:
+                Intent intent3 = new Intent(this,Main3Activity.class);
+                startActivity(intent3);
+
+                break;
+            case R.id.test4:
+                Intent intent4 = new Intent(this,Main4Activity.class);
+                startActivity(intent4);
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
